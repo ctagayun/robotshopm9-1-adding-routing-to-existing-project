@@ -316,7 +316,9 @@ Module 9: Routing and Navigating with Angular
             ng generate module app-routing --flat --module=app (prevents bg to put the module
                in its own folder. --module=app will import the routing into app.module)
         - open an update AppRoutingModule (see comments on what code needs to be added)
-        
+
+        - lastly open AppComponent.ts and add <router-outlet> below the <bot-site-header>
+
 Module10: Creating Angular Forms
 
 Module11: Organizing Angular Applications with Modules
