@@ -1,0 +1,514 @@
+
+ Angular: Getting Started by Deborah Kurata (Updated to Angular 16 Feb 2022)
+    https://app.pluralsight.com/library/courses/angular-2-getting-started-update/table-of-contents
+
+
+  Notes:
+      - download NPM from this lik www.npmjs.com
+      --->
+    - got to https://nodejs.org/en/download/current/ and download node.js msi
+    - run the npm install
+
+    - How to setup an Angular2 Project
+      - to manually setup Angular 2 Application - go t0 www.angular.io
+      - github.com/angular/quickstart or
+      - go to github.com/angular/angular-cli to use AngularCLI
+      - use Starter Files --> go to github.com/deborahK/Angular2-GettingStarted
+
+    To hide typescript generated files in VS Code;
+    -go to preferences-->settings-->workspace
+    / Place your settings in this file to overwrite default and user settings.
+    {
+      "files.exclude":{
+          "app/**/*.js":true,
+          "app/**/*.js.map":true
+      }
+    }
+
+    {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.DS_Store": true,
+            "**/*.js.map": true,
+            "**/*.js": {"when": "$(basename).ts"}
+        }
+    }
+
+    - ctrl + e shortcut to search for files
+
+    - go to www.angular.io ---> tools and libraries -- UI Components --> ng2-bootstrap
+
+Module 2:
+   What is a Component
+    - tip in adding import statements using intellisense
+        - type the decorator or function you need. Select it. VS code
+          will automatically add the import statement. Example:
+          @Component --> click or select. Import statement will be added
+
+    - Angular CLI creates the initial component .. the App component
+      (we need to modify this component based on our application REQUIREMENTS)
+
+    - a component has a view and a code-behind class. And an extra data called Meta-Data which
+      defines the class as an Angular componet. Metadata has:
+         - decorator - it is a function that adds metadata to a class
+
+    - a component includes interface fragments defining a view for the application
+
+    - we use angular binding and directives (in the html) to power up the view.
+      a class that contains code and properties associated with the view. the class is created
+      with typescript.
+
+    - in addition to the class, a component contains import statements of directives it needs.
+
+    - a class becomes a component when we it a component meta data:
+        @Component(
+          {
+            selector: pm-app,
+            template: index.html...
+          }
+        )
+
+    - BOOTSTRAPPING App.component see comments in:
+          app.component.ts and index.html
+
+    - an angular app is a collection of components
+
+    - a component has a life cycle hooks: OnInit, OnChanges, OnDestroy these hooks are interfaces
+      that we need to implement in our components.
+
+    - Pipes are used to transform bound properties.. such as currency properties that needs formatting
+      Pipes are also used for filtering and sorting
+
+    - Nested Components
+       - an inner component is embedded in the outer component by sppecifying the directive name
+         of the component (ex. pm-star) in the outer compoent
+       - outer component (parent) communicates to the inner component using input properties
+       - inner component communicates with outer using input properties and communicates to
+         the outer component by raising events
+
+       - passing data to the inner component using @input decorator in the properties of the
+         of the component. @input () rating: number; - this exposes rating to the container
+         to access and populate by binding.
+
+      - passing data to the container:
+          - the inner component exposes an event using @Output
+              @Output() notify: eventEmitter<string> = new eventEmitter<string>();
+
+
+  2. SERVICES AND DEPENDNECY INJECTION:
+      - building a service: create a class; import what we need for the srvice and define
+        the the metadata as a service by using the @injectable decorator
+
+      - register the service with angular in the component tha twill use it
+      - use constructor dependency injection to inject a service in a component
+
+  3. RETRIEVING DATA USING HTTP:
+      - OBSERVABLES (proposed es2016) - manages async data. we can think of it as an ARRAY whose
+        items arrives async over time. To use observable now (pending es2016) we need to
+        RxJS - Reactive extensions 3rd party lib
+
+      - method in our code can subscribe to an observable(using SUBSCRIBE FUNCTION) to receive
+        async notifications as new data arrives. Map operator transform the incoming data.
+
+      - SENDING HTTP REQUEST
+          - inject angular http service (import httpclient) in our component, but first
+            import HttpClientModule in app.module.ts @NgModule section.
+
+  4. WHAT IS A MODULE
+
+      - it is use to organize the pieces of our application.
+      - A CLASS WITH AN NgModule decorator
+      - and angular module imports other module (route module, @angular module, 3rd party, etc.)
+        and can export or re-export modules it imports.
+      - it can register service providers with Angular injector making the service availalable to any
+        class in the application
+
+      - it declares the components, directives and pipes it manages under the
+        declarations section //very important
+          Ex.
+            declarations: [
+                      ProductListComponent,
+                      ProductDetailComponent,
+                      ProductFilterPipe
+      - modules  extends our application using external libraries
+
+      - module is great way to selectively aggregate classes from other modules and re-export them
+        in a consolidated convenience module. browser module, http module and router modules
+        are examples of this. see appmodule.ts
+
+    =============================
+    ROOT MDULE - APPMODULE.TS
+            Note: you have to inport any FEATURE module in app.module.ts. Ex. the productmodule.ts
+              that we created.
+
+              import { NgModule } from '@angular/core';
+              import { BrowserModule } from '@angular/platform-browser';
+              import { HttpModule } from '@angular/http';
+              import { RouterModule } from '@angular/router';
+              import { AppComponent }  from './app.component';
+              import { WelcomeComponent } from './home/welcome.component';
+
+              /* Feature Modules */
+              import { ProductModule } from './products/product.module';
+              @NgModule({
+                imports: [
+                  BrowserModule,
+                  HttpModule,
+                  RouterModule.forRoot([
+                    { path: 'welcome', component: WelcomeComponent },
+                    { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+                    { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+                  ]),
+                  ProductModule
+                ],
+                declarations: [ //app.module manages the following components
+                  AppComponent,
+                  WelcomeComponent
+                ],
+                bootstrap: [ AppComponent ]
+              })
+              export class AppModule { }
+
+      ==================================
+      FEATURE MODULE - PRODUCTMODULE.TS
+
+      - it is use to organize the pieces of our application. Example: product.module.ts
+        This module is called FEATURE MODULE. It is meant to encapsulate unique business
+        work flow such as Product management
+                  import { NgModule } from '@angular/core';
+                  import { RouterModule} from '@angular/router';
+                  import { ProductListComponent } from './product-list.component'
+                  import { ProductDetailComponent } from './product-detail.component';
+                  import { ProductDetailGuard } from './product-guard.service';
+                  import { ProductFilterPipe } from './product-filter.pipe';
+                  import { ProductService } from './product.service';
+                  import { SharedModule } from '../shared/shared.module';
+
+                  @NgModule({
+                    imports: [
+                      SharedModule,
+                      RouterModule.forChild([
+                        { path: 'products', component: ProductListComponent },
+                        { path: 'product/:id',
+                          canActivate: [ ProductDetailGuard],
+                          component: ProductDetailComponent
+                        }
+                      ])
+                    ],
+                    declarations: [ //product module manages the folowing components and pipes
+                      ProductListComponent,
+                      ProductDetailComponent,
+                      ProductFilterPipe
+                    ],
+                    providers: [
+                      ProductService,
+                      ProductDetailGuard
+                    ]
+                  })
+                  export class ProductModule {}
+      ==================================
+      SHARED MODULE  - IS A MODULE THST IS COMMONLY USED IN OTHER MODULES
+
+
+  5. ROUTING BASICS
+      - we need to import RouterModule in appmodule.ts
+      - routing provides a way to navigate the application
+      - an angular application is a SPA. All views are displayed one by one in
+        index.html defined in the <body> in this case in <pm-app> </pm-app> tag:
+            html>
+
+          <head lang="en">
+              <base href="/">
+              <title>Acme Product Management</title>
+              ....
+          </head>
+          <body>
+              <pm-app>Loading App...</pm-app>
+          </body>
+
+  </html>
+  ==============================================================================
+
+  Mark Zamoyta's Building Angular 2.0 Framework
+  ==============================================================================
+  https://github.com/angular/angular-cli
+  https://github.com/angular/angular-cli#updating-angular-cli
+
+  1. Download node.js.
+    - go  to https://nodejs.org/en/download/current/ and download node.js msi
+    - run the npm install
+  2. To Instal CLI: nmp install -g @angular/cli
+
+    -g means global so that you will be able to access CLI from any folder
+
+    - To display version of CLI = ng --version
+
+  3. To Create and setup a Project using CLI
+    - ng new green-nations
+    - type cd green-nations
+    - type "ng-serve" to start development web server
+    - go to a browser and type "loclahost:4200" to run the application you should see "app works!"
+
+    - next install bootstrap: type
+        - next run npm install --save bootstrap
+        - go to https://github.com/angular/angular.cli  and copy ../node_modules/bootstrap/dist/css/bootstrap.css
+        - open angular-cli.json and navigate to line 20 thru 22
+          and paste  "../node_modules/bootstrap/dist/css/bootstrap.css" to the apps[0].styles array
+
+            Note: "styles.css" inside line 20 thru 22 is our global css located in "src" folder
+
+    - now install the font
+        - go to https://fonts.google.com
+        - click the the + positive sign of Open Sans font
+          and then click to open dialog
+          and then copy the CDN link appearing below STANDARD
+          and then go to "src" folder and open index.html and paste the CDN link after
+          href="favicon.ico"
+
+        - then go back to the selected google font dialog and copy this font-family: 'Open Sans', sans-serif;
+          appearing below Specify in CSS.
+          And then open style.css located inside src folder and create the body of style.css which is our global css
+          like this and paste inside it font-family: 'Open Sans', sans-serif;:
+              body{
+                font-family: 'Open Sans', sans-serif;
+              }
+
+    - now look at the "App" folder
+
+    ==========================================================================
+    Angular 2 Reactive Forms - Kurata
+
+    -  blogs.msmvps.com/deborahk/angular-2-reactive-forms
+    -  github.com/deborahK/angular2-ReactiveForms
+
+
+    ====================================================================================
+    BUILDING Single Page Applications on ASP.NET Core with Javascript Services
+    https://blogs.msdn.microsoft.com/webdev/2017/02/14/building-single-page-applications-on-asp-net-core-with-javascriptservices/
+
+    1.Collectively the following are called JavaScriptServices:
+
+      Microsoft.AspNetCore.SpaTemplates plugs into dotnet new, providing project templates for Angular 2, Aurelia, Knockout, React, and React+Redux applications.
+      Microsoft.AspNetCore.SpaServices is how SpaTemplates-produced projects work internally. It provides useful features for SPA applications, such as server-side rendering for Angular and React applications, plus integration with Webpack build middleware.
+      Microsoft.AspNetCore.NodeServices is how SpaServices works internally. It’s a low-level library that gives a fast, robust way for ASP.NET Core applications to run arbitrary JavaScript code on the server.
+
+
+  2: The easiest way to get started is by using one of the project templates we’ve made available. These plug into the standard dotnet new command,
+    and work on Windows, Mac, and Linux.
+
+    To install the Single Page Application (SPA) templates, run the following command:
+
+    dotnet new --install Microsoft.AspNetCore.SpaTemplates::*
+
+
+    ======================================================================
+    Developing Angular2 MVC Core in VS2017
+
+      REQUIREMENTS
+        - VS 2017
+        - node.js v6 or later
+        - web payload for for asp.net web development
+        - note angular develeopnt using asp.net core SPA TEMPLATE are commnad line driven as of todate
+
+
+      SPA TEMPLATE BENEFITS
+        - Angular and ASP.NET Core is a single solution - THIS MEANS THAT IT SOLVES THE CHALLENGES OF
+          BRINGING ANGULAR CLIENT-SIDE SYSTEM WITH THE ASP.NET CORE SERVER-SIDE SYSTEM. So we can host it in a
+          single solution. It resolve some of the routing issues.
+
+        - Server side pre-rendering - the advantage of this is that it leverages node on the server to create a
+          a version of your page that can be downloaded very quickly when you start the application before
+          the Javascript client is up and so it gives you much faster applcation launch capability.
+
+        - Webpack dev middleware - we are leveraging this middleware. The gret thing about this webpack tool is
+          it runs in the background and is constantly monitoring your source fies and will transpile your typescripts
+          as created and saved. That mmeans it is always ready to go. Tht ties nicely with HOT MODULE REPLACING
+
+
+        - Hote Module Replacing - this llows us to automaticall refresh our browser to display updated content as you
+          modify the angular application. So this means we dont have to constanly compile our applcations. This is
+          create for rapid client-side development of our application.
+
+        - The template supports 2 build modules:
+            - DEV - source maps for debugging
+            - PROD - minifies and does not produce source maps
+
+        - See Steve Sanderson blog post: http://bit.ly/spatemplate to learn more
+
+
+        - https://channel9.msdn.com/Events/Visual-Studio/Visual-Studio-2017-Launch/WEB-103
+
+    ================================================
+    How to install SPA Templates
+        - verify version of node by doing "node --version" make sure it is greater than Version 6
+        - dotnet new --install Microsoft.AspNetCore.SpaTemplates::*  to install spa templates
+          dotnet new --install Microsoft.AspNetCore.SpaTemplates Version --0.8.5
+
+    =================================================
+    HOW TO CREATE ANGULAR SPA APPLICATIONS
+    - open a commnad prompt
+    - md CrankBank - create a directory
+    - cd CrankBank - change directory
+
+    - donet new -l  - run this comand to display list of available templates
+
+    - create my new angular application: (this will create the project)
+          dotnet new angular (do a dir to see projet)
+
+
+    - run  dotnet restore - this will restore all packges needed. I could have done this in VS 2017
+      using Nuget but  want to see progress of NPM instgall
+
+    - type npm install - to install NPM
+
+    - run this command bring up the project Visual Studio ---> start crankbank.csproj
+
+  ===================================================
+    PREPARING FOR OUR APP
+
+    - delete the components we dont need.
+        - CounterComponent
+        - FetchDataAcomponent
+        - NavMenu
+
+        - update app.module.ts - remove imports declaration and adjust routes
+
+        - Update AppComponent
+        - update HomeComponent
+
+    - see notes on startup.cs which contains the routing magic on the MVC side of the house
+      that maps to our home controller so that we can deliever our first view via MVC
+
+    - open Index.html this is the single page that will be served by our MVC application.
+
+          <!--noticed we a have an app tag here which points to our app component
+              in Angular
+              prerender-module="ClientApp/dist/main-server - this fires the pre-rendering
+              of our application to speed application launch
+              -->
+          <app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
+
+          <script src="~/dist/vendor.js" asp-append-version="true"></script>
+
+          <!--we are also launching our compiled, transpiled, minified client.js
+              to launch our application located in the dist folder undert app folder-->
+          @section scripts {
+              <script src="~/dist/main-client.js" asp-append-version="true"></script>
+          }
+
+
+
+      - the following typscript files under ClientApp Folder are files that support hot module
+        loading and starting up  our application.
+          boot-client.ts
+          boot-server.ts
+
+
+Module 3: First things First
+  - https://app.pluralsight.com/course-player?clipId=c6dfdf97-73b3-4ea9-aa9d-50bde793cf15
+
+  - typescript we use to create an Angular App - ECMAScript ES 2015 formerlt known
+    as ES6. Uses classes and arrow functions
+
+  1. what we need:
+      - install Visual Studio Code
+
+      - install extensions suggested by John Papa
+          -https://www.johnpapa.net/essential-angular-vs-code-extensions/
+          - Angular-essentials
+
+      - install NPM - a package manager for Javascript applications. We install it by installing Node.
+          - navigate to https://nodejs.org/en/download --> Windows (select LTS version)
+          - npm -v for version
+
+      - define package.json to define the packages needed by the application
+          "dependencies" - packages needewd for development and deployment
+          "devDepemdencies" - packages needed for deployment
+
+  2. Setting up Existing Angular Application
+     - navigate to https://github.com/deborahK/Angular-GettingStarted  and do:
+        - git clone https://github.com/DeborahK/Angular-GettingStarted.git
+
+     - navigate to "C:\_Demo\Angular-2-getting-started-update-Jul2022-Repo\Angular-GettingStarted"
+         and do git clone https://github.com/DeborahK/Angular-GettingStarted.git
+
+     - navigate to "C:\_Demo\Angular-2-getting-started-update-Jul2022-Repo\Angular-GettingStarted"
+        create a folder called APM-Final and copy source of APM-Final master called "APM-Final"
+        and create a folder called APM and copy source code from the master called "Start"
+
+     -  Open a terminal in VS Code and navigate to
+          C:\_AMyAngularDev\Angular-Getting-Started-Kurata-Feb2024-Upd\APM
+          and run NPM install --> npm start
+
+        do the same for APM-Final
+
+
+  3. Creating Angular application from scratch using Angular CLI
+      https://app.pluralsight.com/course-player?clipId=6f97c3df-0511-4f83-86f7-411bd1ad260
+
+      - we need to install Amgular CLI globally --> command prompt -->
+        npm install -g @angular/cli
+
+      - ng new apm-new --prefix pm
+
+      - note that angular cli create index.html and the app.component.ts in  src/app folder
+
+Module 4: Intro to Components
+   
+
+
+
+
+Useful Links
+
+Here are some useful links that are referenced in or supplement this course:
+
+- Deborah's github: https://github.com/DeborahK/Angular-GettingStarted
+
+- Nicer, clickable version of this file: https://github.com/DeborahK/Angular-GettingStarted/blob/master/links.md
+
+- Pluralsight course: https://app.pluralsight.com/library/courses/angular-2-getting-started-update
+
+- Discussion page for the course: https://app.pluralsight.com/library/courses/angular-2-getting-started-update/discussion
+
+- Official Angular documentation: https://angular.io/
+
+- Angular Errors List: https://angular.io/errors
+
+- TypeScript Playground: https://www.typescriptlang.org/play
+
+- Visual Studio Code (VS Code): https://code.visualstudio.com/
+
+- node/npm: https://nodejs.org/en/download
+
+- Angular: Getting Started Problem Solver Blog post that identifies common issues you may run into when using the sample code in this course, along with solutions: http://blogs.msmvps.com/deborahk/angular-2-getting-started-problem-solver/
+
+- Bootstrap: https://getbootstrap.com
+
+- Font Awesome: https://fontawesome.com
+
+- JavaScript Array filter function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+- Web event docs: https://developer.mozilla.org/en-US/docs/Web/Events
+
+- Angular Update Guide (to update from one Angular version to another): https://update.angular.io/
+
+- Angular DevTools (Chrome extension for Angular debugging and profiling): https://chrome.google.com/webstore/detail/angular-devtools/ienfalfjdbdpebioblfackkekamfmbnh
+- Angular ESLint (Enabling ESLint in Angular projects): https://github.com/angular-eslint/angular-eslint
+
+Referenced Pluralsight Courses:
+- "TypeScript: Getting Started": https://app.pluralsight.com/library/courses/getting-started-typescript
+
+- "Visual Studio Code": https://app.pluralsight.com/library/courses/visual-studio-code
+
+- "Angular Component Communication": https://app.pluralsight.com/library/courses/angular-component-communication
+
+- "Angular: Reactive Forms": https://app.pluralsight.com/library/courses/angular-2-reactive-forms
+
+- "RxJS in Angular: Reactive Development": https://app.pluralsight.com/library/courses/rxjs-angular-reactive-development
+
+- "Angular HTTP Communication": https://app.pluralsight.com/library/courses/angular-http-communication
+
+- "Angular Routing": https://app.pluralsight.com/library/courses/angular-routing
+
+- "Angular CLI": https://app.pluralsight.com/library/courses/angular-cli

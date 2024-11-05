@@ -1,0 +1,65 @@
+
+<div class="container">
+  <div class="filters">
+    <a class="button" (click)="filter='Heads'"> Heads</a>
+    <a class="button" (click)="filter='Arms'">Arms</a>
+    <a class="button" (click)="filter='Torsos'">Torsos</a>
+    <a class="button" (click)="filter='Bases'">Bases</a>
+    <a class="button" (click)="filter=''">All</a>
+  </div>
+
+
+
+  <!-- A single list where a product should be displayed
+     Let's wire this up to list item to iterate through an
+     array of products.
+       "let" = has a scope block. only accessible within the block it's
+               declared in (e.g., within a loop, if statement, or function).
+       "var" = has function-scope is accessible within the entire function
+               it's declared in, or globally if declared outside any function.
+    -->
+  <ul class="products">
+    <!-- li element is the element that is repeated because it is the
+    one hosting the ngFor. getFilteredProducts() is the function that fetches
+    and filter the products to display -->
+
+    <li class="product-item" *ngFor="let product of getFilteredProducts()">
+
+      <!-- This where the parent tells the child component that it wants it to receive some data.
+      we inject the "product" variable from the "ngFor". The product on the left side is
+      the "product" variable ProductDetailsComponent
+
+      (buy)=" addToCart(product) - defined in CatalogComponent listens for an event emitter named "buy".
+      This is ewvent emitter is defined in Product-Details component by using @Output directive
+
+      When event "buy" is triggered, addToCart(product) is invoked. addToCart() is defined
+      in the parent called "CatalogComponent.ts"
+       -->
+      <bot-product-details [product]= "product" (buy)="addToCart(product)"> </bot-product-details>
+
+      <!-- Move this to bot-product-details-component.html
+      <div class="product">
+        <div class="product-details">
+          <img [src]="getImageUrl(product)" [alt]="product.name" />
+          <div class="product-info">
+            <div class="name">{{product?.name}}</div>
+            <div class="description">{{product?.description}}</div>
+            <div class="category">Part Type: {{product?.category}} </div>
+          </div>
+        </div>
+        <div class="price">
+
+          <div *ngIf="product.discount === 0">
+            ${{product.price | currency : "GBP"}}
+          </div>
+
+          <div  *ngIf="product.discount > 0" class="discount">
+             ${{(product.price * (1- product.discount)) | currency:'USD'}}
+          </div>
+          <button class="cta" (click)="addToCart(product)">Buy</button>
+        </div>
+      </div> -->
+
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,26 @@
+<div class="product">
+  <!-- This is where we want to display product details
+   for now we will use interpolation
+    -->
+  <div class="product-details">
+    <img [src]="getImageUrl(product)" [alt]="product.name" />
+    <div class="product-info">
+      <div class="name">{{product.name}}</div>
+      <div class="description">{{product.description}}</div>
+      <div class="category">Part Type: {{product.category}} </div>
+    </div>
+  </div>
+  <div class="price">
+    <!-- Show only if discount is == 0 -->
+    <div *ngIf="product.discount === 0">
+      ${{product.price | currency : "GBP"}}
+    </div>
+    <!-- Show only if discount > 0 -->
+    <div  *ngIf="product.discount > 0" class="discount">
+       ${{(product.price * (1- product.discount)) | currency:'USD'}}
+    </div>
+
+    <!-- send in our data (e.g. product) to the parent CatalogComponent.ts when button is clicked-->
+    <button class="cta" (click)="buyButtonClick(product)">Buy</button>
+  </div>
+</div>
