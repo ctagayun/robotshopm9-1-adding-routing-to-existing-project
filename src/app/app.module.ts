@@ -9,6 +9,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { CartComponent } from './cart/cart.component';
 
 /*
   Angular module help us organize our application and
@@ -23,7 +24,7 @@ import { CommonModule } from '@angular/common';
     CatalogComponent,
     SiteHeaderComponent,
     ProductDetailsComponent,
-
+    CartComponent
   ],
   imports: [
     BrowserModule,

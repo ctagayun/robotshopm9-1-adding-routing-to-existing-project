@@ -21,7 +21,7 @@ Module 3: Creating Components
       - copy code from _course-resources styles.css to: src/styles.css
       - npm start to test
       - copy images folder from _course-resources to src/asset folder
-
+k
       - go to home.component.html
           change src=assets/images/robot-parts/head-big-eye.png
                  src=assets/images/robot-parts/head-friendly.png
@@ -327,6 +327,13 @@ Module 9: Routing and Navigating with Angular
           - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/e23b4bad-4b17-442c-b5f5-2eae70404dc7
 
           - add code to App.Routing.Module
+
+     - Linking to Routes
+          - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/cc99633c-c246-4a6f-86b8-a5c272299ca4
+
+          - go to SiteHeaderComponent.html and add "routerlink"  instead of href
+
+          - after wiring it up click catalog, cart, and home and see the route changes
 
 Module10: Creating Angular Forms
 
