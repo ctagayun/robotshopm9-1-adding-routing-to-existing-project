@@ -334,14 +334,55 @@ Module 9: Routing and Navigating with Angular
           - go to SiteHeaderComponent.html and add "routerlink"  instead of href
 
           - after wiring it up click catalog, cart, and home and see the route changes
+
    - Navigating from Javascript
       - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/0dd5d862-95bf-4c00-a712-9944fab40235
 
       - open Catalog Component
 
-      - inject the router into the constructor
+      - inject the router into the constructor (see notes in source code)
 
-      
+   - Defining and accessing route parameters
+      - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/66c42cd6-b60a-46cc-9bc5-bab3921a64e0
+
+      - Route paramters are a way to define URLs with a dynamic params which are consumed
+        by the receiving components.
+
+      - ToDO:
+          - we will wire up the icons in the HomeComponent.ts so that when you click
+          the ROBOT HEADS, for example, it takes you to the catalogcomponent with A
+          URL like "catalog/heads" and automatically filter the page to show only
+          Robot Heads stuff
+
+      - this can be accomplished by adding QUERY PARAMETERS to the URL. Go to
+      HomeComponent.html and it up by adding routerlink to "<a>" tag of
+      all "li" elements in the ollowing "UL"
+            <ul class="robot-parts-cta">
+               Example:
+                <li>
+                  //add the routerlink to the "<a>" tag
+                  <a routerLink="/catalog" [queryParams]="{filter: 'Heads'}" class="part">
+                    <img src="/assets/images/robot-parts/head-shredder.png" alt="Robot Heads" />
+                    <div>ROBOT HEADS</div>
+                  </a>
+               </li>
+            </ul>
+
+      - after the above go to AppRoutingModule and modify the Catalog path like this:
+           {path: 'catalog/:filter', component: CatalogComponent, title: "Catalog - Robot Shop"},
+
+      - to test:
+          - go to "Home"
+          - click "Robot Heads" in the HomeComponent, notice that the url
+            becomes: localhost:4200/catalog/Heads
+
+      - at this point path: 'catalog/:filter' is just displaying the url: localhost:4200/catalog/Heads
+      it is not actually filtering the result. Now we need to change CatalogComponent to read
+      the value of the QueryParameter we call "filter.
+      Inject the private route: ActivatedRoute in the constructor. It is needed by
+      Angular to determine what route is clicked
+
+
 Module10: Creating Angular Forms
 
 Module11: Organizing Angular Applications with Modules

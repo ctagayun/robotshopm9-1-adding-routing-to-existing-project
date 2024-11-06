@@ -2,7 +2,7 @@ import { ProductService } from './product.service';
 import { Component, inject } from '@angular/core';
 import { IProduct } from './product.model';
 import { CartService } from '../cart.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'bot-catalog',
@@ -21,10 +21,10 @@ export class CatalogComponent {
   // it is easier to test. Inject the productservice also
   constructor(private cartSvc: CartService,
              private productSvc: ProductService,
-             private router: Router) //first inject the router
-  {
+             private router: Router, //first inject the router
+             private route: ActivatedRoute) //needed by Angular to determine what route is clicked
 
-  }
+  {  }
 
   //this lifecycle hook runs when CatalogComponent initiaizes.
   //do a subcribe because the returned object from the ProductService
@@ -32,7 +32,12 @@ export class CatalogComponent {
   ngOnInit(){
     this.productSvc.getProducts().subscribe(products => {
       this.products = products;
-    })
+    });
+    //after injecting ActivatedRoute. Let's access the snapshot of the activated route
+    //and get the value of the query param which is called "filter"
+    //Now when we go to HomeComponent and click Heads only Robot Heads are displayed.
+    //If you click "Arms" only Robot Arms are displayed
+    this.filter = this.route.snapshot.params['filter'];
   }
 
   //next call navigate method

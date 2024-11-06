@@ -8,7 +8,10 @@ import { CartComponent } from './cart/cart.component';
 //Routes array. We will use this array to define our routes
 const routes: Routes = [
   {path: 'home', component: HomeComponent, title: "Home - Robot Shop"},
-  {path: 'catalog', component: CatalogComponent, title: "Catalog - Robot Shop"},
+
+  //:filter is the name of the query parameter
+  {path: 'catalog/:filter', component: CatalogComponent, title: "Catalog - Robot Shop"},
+
   {path: 'cart', component: CartComponent, title: "Cart - Robot Shop"},
   {path: '', redirectTo: 'home', pathMatch: 'full'}, //default. Pathmach=full
    // This tells angular how to match the route against the URL. The default pathMatch
