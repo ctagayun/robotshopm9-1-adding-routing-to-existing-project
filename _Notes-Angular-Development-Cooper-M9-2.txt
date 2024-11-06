@@ -319,6 +319,15 @@ Module 9: Routing and Navigating with Angular
 
         - lastly open AppComponent.ts and add <router-outlet> below the <bot-site-header>
 
+     - creating basic routes for navigation
+        - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/22ddd5af-9fe8-4dc1-8ef3-df59ca57831a
+
+        - add basic routes to App.Routing.Module
+     - creating Redirect Routes
+          - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/e23b4bad-4b17-442c-b5f5-2eae70404dc7
+
+          - add code to App.Routing.Module
+
 Module10: Creating Angular Forms
 
 Module11: Organizing Angular Applications with Modules

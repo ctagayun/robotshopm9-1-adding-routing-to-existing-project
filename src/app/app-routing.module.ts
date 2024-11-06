@@ -1,9 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { CatalogComponent } from './catalog/catalog.component';
 
 //Routes array. We will use this array to define our routes
-const routes: Routes = [];
+const routes: Routes = [
+  {path: 'home', component: HomeComponent, title: "Home - Robot Shop"},
+  {path: 'catalog', component: CatalogComponent, title: "Catalog - Robot Shop"},
+  //{path: 'cart', component: CartComponent, title: "Cart - Robot Shop"},
+  {path: '', redirectTo: 'home', pathMatch: 'full'}, //default. Pathmach=full
+   // This tells angular how to match the route against the URL. The default pathMatch
+   //property for all routes is prefix, which means that angular will inspect the URL provided
+   //from the browser from left  to right until it finds a match.
+   //With "redirectTo" we want to use "full". Which means we only want to use
+   //this path only if the entire URL is empty like: localhost:8081
+
+   //Note: The order of your route matters
+
+];
 
 @NgModule({
   declarations: [],
