@@ -334,7 +334,14 @@ Module 9: Routing and Navigating with Angular
           - go to SiteHeaderComponent.html and add "routerlink"  instead of href
 
           - after wiring it up click catalog, cart, and home and see the route changes
+   - Navigating from Javascript
+      - https://app.pluralsight.com/ilx/video-courses/d5d30ea4-0af1-447a-b13a-e60a095337a6/189d8f2f-edfe-4789-ab95-904092e47770/0dd5d862-95bf-4c00-a712-9944fab40235
 
+      - open Catalog Component
+
+      - inject the router into the constructor
+
+      
 Module10: Creating Angular Forms
 
 Module11: Organizing Angular Applications with Modules

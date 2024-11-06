@@ -2,6 +2,7 @@ import { ProductService } from './product.service';
 import { Component, inject } from '@angular/core';
 import { IProduct } from './product.model';
 import { CartService } from '../cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bot-catalog',
@@ -18,7 +19,10 @@ export class CatalogComponent {
 
   //inject the service in the constructor. this is the preferred way because
   // it is easier to test. Inject the productservice also
-  constructor(private cartSvc: CartService, private productSvc: ProductService){
+  constructor(private cartSvc: CartService,
+             private productSvc: ProductService,
+             private router: Router) //first inject the router
+  {
 
   }
 
@@ -31,9 +35,10 @@ export class CatalogComponent {
     })
   }
 
-  //refactor addToCart
+  //next call navigate method
   addToCart(product: IProduct) {
      this.cartSvc.add(product);
+     this.router.navigate(['/cart']) //this means go to Cart after "Buy" button is clicked from the catalog.
   }
 
   getFilteredProducts(){

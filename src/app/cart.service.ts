@@ -24,6 +24,5 @@ export class CartService {
     this.http.post('/api/cart', this.cart).subscribe(()=>{ //this will not execute unless you subscribe
       console.log(`product ${product.name} added to cart`);
     });
-
     }
 }
