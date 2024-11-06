@@ -380,7 +380,10 @@ Module 9: Routing and Navigating with Angular
       it is not actually filtering the result. Now we need to change CatalogComponent to read
       the value of the QueryParameter we call "filter.
       Inject the private route: ActivatedRoute in the constructor. It is needed by
-      Angular to determine what route is clicked
+      Angular to determine what route is clicked.
+
+      - After doing the "ActivatedRoute" when you click Heads, Arms, Torso, Base it is
+      CORRECTLY displaying the filtered products...BUT THE URL IS NOT CHANGING
 
 
 Module10: Creating Angular Forms

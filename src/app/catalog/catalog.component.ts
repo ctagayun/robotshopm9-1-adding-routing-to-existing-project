@@ -36,7 +36,15 @@ export class CatalogComponent {
     //after injecting ActivatedRoute. Let's access the snapshot of the activated route
     //and get the value of the query param which is called "filter"
     //Now when we go to HomeComponent and click Heads only Robot Heads are displayed.
-    //If you click "Arms" only Robot Arms are displayed
+    //If you click "Arms" only Robot Arms are displayed.
+
+    //Note after doing the "ActivatedRoute" when you click Heads, Arms, Torso, Base it is
+    // CORRECTLY displaying the filtered products...BUT THE URL IS NOT CHANGING
+
+    //The above is happening because we are linking CatalogComponent to itself
+    //CatalogComponent is already LOADED. When you link to a component the CatalogComponent
+    //will not reload. Which means smapshot is STALE. Since the component is not
+    //re-loaded the ngInit is also not executed
     this.filter = this.route.snapshot.params['filter'];
   }
 
